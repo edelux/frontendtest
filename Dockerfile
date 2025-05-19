@@ -8,7 +8,7 @@ RUN npm ci
 COPY ./ /app/
 ARG ENVIRONMENT
 ENV ENVIRONMENT=$ENVIRONMENT
-RUN npm run build:dev
+RUN npm run build:development
 
 # Include Nginx
 FROM nginx:latest

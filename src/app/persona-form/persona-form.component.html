@@ -1,0 +1,57 @@
+<div class="container">
+  <h2>Formulario de Persona</h2>
+  <form [formGroup]="personaForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        formControlName="nombre" 
+        class="form-control" 
+        [ngClass]="{ 'is-invalid': submitted && f['nombre'].errors }"
+      >
+      <div *ngIf="submitted && f['nombre'].errors" class="invalid-feedback">
+        <div *ngIf="f['nombre'].errors['required']">El nombre es obligatorio</div>
+        <div *ngIf="f['nombre'].errors['minlength']">El nombre debe tener al menos 2 caracteres</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="apellidos">Apellidos</label>
+      <input 
+        type="text" 
+        id="apellidos" 
+        formControlName="apellidos" 
+        class="form-control" 
+        [ngClass]="{ 'is-invalid': submitted && f['apellidos'].errors }"
+      >
+      <div *ngIf="submitted && f['apellidos'].errors" class="invalid-feedback">
+        <div *ngIf="f['apellidos'].errors['required']">Los apellidos son obligatorios</div>
+        <div *ngIf="f['apellidos'].errors['minlength']">Los apellidos deben tener al menos 2 caracteres</div>
+      </div>
+    </div>
+    
+    <div class="form-buttons">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <button type="button" class="btn btn-danger" (click)="limpiarLista()">Limpiar Lista</button>
+    </div>
+  </form>
+  
+  <div class="personas-list" *ngIf="personas.length > 0">
+    <h3>Lista de Personas</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let persona of personas">
+          <td>{{ persona.nombre }}</td>
+          <td>{{ persona.apellidos }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

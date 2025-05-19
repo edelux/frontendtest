@@ -1,0 +1,41 @@
+---
+name: CICD MS Deploy
+run-name: MS deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-env:
+    environment: dev
+    runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: dev
+
+    steps:
+      - name: echo
+        run: |
+          echo "ENVIRONMENT=${{ vars.ENVIRONMENT }}"
+
+
+  build-and-push:
+    needs: setup-env
+    uses: edelux/cicd-build-push/.github/workflows/build_push.yaml@main
+    with:
+      ENVIRONMENT: ${{ needs.setup-env.outputs.ENVIRONMENT }}
+
+    permissions:
+      id-token: write
+      contents: read
+
+
+  deploy-update-task:
+    needs: [setup-env, build-and-push]
+    uses: edelux/cicd-ecs/.github/workflows/deploy_and_update_tasks.yaml@main
+    with:
+      ENVIRONMENT: ${{ needs.setup-env.outputs.ENVIRONMENT }}
+
+    permissions:
+      id-token: write
+      contents: read
+...
